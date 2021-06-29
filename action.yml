@@ -1,0 +1,18 @@
+name: 'Local Container Registry Upload'
+description: 'Local Container uploads the content of the registry to artifacts'
+inputs:
+  path:
+    description: 'Path from which the data should be uploaded'
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Tar the contents of registry
+      run: tar -cvf local_registry.tar ${{ inputs.path }}
+
+    - name: Upload Docker registry data for testing
+        uses: actions/upload-artifact@v2
+        with:
+          name: registry-data
+          path: local_registry.tar
+          retention-days: 1
